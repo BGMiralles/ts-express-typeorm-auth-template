@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { Task } from "../models/Task";
+import { User } from "../models/User";
 
-const createTask = async(req: any, res: Response) => {
+const createTask = async(req: Request, res: Response) => {
   try {
     //recuperar la info
     const title = req.body.title
@@ -37,7 +38,7 @@ const createTask = async(req: any, res: Response) => {
   }
 }
 
-const getAllTasksByUserId = async(req: any, res: Response) => {
+const getAllTasksByUserId = async(req: Request, res: Response) => {
   try {
     const tasks = await Task.findBy(
       {
@@ -59,14 +60,29 @@ const getAllTasksByUserId = async(req: any, res: Response) => {
   }
 }
 
-const getTaskByUserId = async(req: any, res: Response) => {
+const getTaskByUserId = async(req: Request, res: Response) => {
   try {
     const taskId = req.params.id
 
-    const task = await Task.findOneBy(
+    const task = await Task.findOne(
       {
-        id: parseInt(taskId),
-        user_id: req.token.id
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          created_at: true,
+          user: {
+            id: true,
+            username: true,
+            email: true
+          }
+        },
+        where:{
+          id: parseInt(taskId)
+        },
+        relations: {
+          user: true,
+        },
       }
     )
 
@@ -91,7 +107,7 @@ const getTaskByUserId = async(req: any, res: Response) => {
   }
 }
 
-const updateTaskById = async(req: any, res: Response) => {
+const updateTaskById = async(req: Request, res: Response) => {
   try {
     // recuperamos la info
     const title = req.body.title
