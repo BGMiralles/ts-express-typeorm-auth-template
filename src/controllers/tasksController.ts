@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import 'dotenv/config'
 import { Task } from "../models/Task";
 import { User } from "../models/User";
 

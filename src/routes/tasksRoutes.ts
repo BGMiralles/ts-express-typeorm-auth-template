@@ -8,5 +8,6 @@ router.post('/', auth, createTask)
 router.get('/', auth, getAllTasksByUserId)
 router.get('/:id', auth, getTaskByUserId)
 router.put('/:id', auth, updateTaskById)
+// router.get('/assigned', auth, getTasksAssignedbyUser)
 
 export { router }

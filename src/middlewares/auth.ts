@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import 'dotenv/config'
 import { TokenDecoded } from "../../types";
 
 const auth = (req: Request, res: Response, next: NextFunction) => {
@@ -22,7 +23,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
       )
     }
 
-    const tokenDecoded = jwt.verify(token, "secreto") as TokenDecoded
+    const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET as string) as TokenDecoded
 
     req.token = tokenDecoded
     
